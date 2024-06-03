@@ -5,3 +5,7 @@
     clear: both;
     text-align: right;
 }
+
+.border {
+    border: 0.5px solid black;
+}

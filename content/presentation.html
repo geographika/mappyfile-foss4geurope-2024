@@ -1,0 +1,178 @@
+<section data-markdown>
+    <script type="text/template">
+        <img class="plain" src="images/logo-osgeo.svg" style="background: none;" />
+
+        ### Enhance your MapServer Workflows with mappyfile
+
+        #### by [Seth Girvin](https://github.com/geographika/)
+
+        <img class="plain" src="images/foss4g.png" style="background: none;" />
+    </script>
+</section>
+
+<section data-markdown>
+    <script type="text/template">
+        ### What is mappyfile?
+
+        * A Python library to create, parse, modify, and format MapServer Mapfiles
+        <img class="border" src="images/mappyfile-modules.png" />
+        * Became an [OSGeo Community Project](https://www.osgeo.org/projects/mappyfile/) in 2023
+    </script>
+</section>
+
+<section data-markdown>
+    <script type="text/template">
+        # Use Cases for Mappyfile
+    </script>
+</section>
+
+<section data-background-image="images/mapserver-studio.png">
+    <h2><a href="https://app.mapserverstudio.net/" target="_blank">MapServer Studio</a></h2>
+</section>
+
+
+<section>
+    <span data-markdown>
+        <script type="text/template">
+            ### Manipulate Mapfiles in Python
+        </script>
+    </span>
+    <pre>
+<code class="language-python" data-trim>
+
+</code>
+</pre>
+    <span data-markdown>
+        <script type="text/template">
+            - Access Mapfile elements through Python dictionaries
+        </script>
+    </span>
+</section>
+
+<section>
+    <span data-markdown>
+        <script type="text/template">
+            ### Help Update Mapfiles to new MapServer Versions
+        </script>
+    </span>
+    <pre>
+    <code class="language-bash" data-trim>
+            mappyfile validate itasca.map
+            itasca.map (Line: 4 Column: 1) ERROR: Invalid value in MAP - 'templatepattern' does not match any of the regexes: '^__[a-z]+__$'
+            itasca.map (Line: 187 Column: 3) ERROR: Invalid value in LAYER - 'dump' does not match any of the regexes: '^__[a-z]+__$'
+            itasca.map (Line: 291 Column: 3) ERROR: Invalid value in LAYER - 'maxscale' does not match any of the regexes: '^__[a-z]+__$'
+            itasca.map (Line: 447 Column: 3) ERROR: Invalid value in LAYER - 'labelmaxscale' does not match any of the regexes: '^__[a-z]+__$'
+            itasca.map (Line: 128 Column: 5) ERROR: Invalid value in TRANSPARENT - True is not one of ['on', 'off']
+            itasca.map (Line: 4 Column: 1) ERROR: Invalid value in WEB - 'maxscale', 'minscale' do not match any of the regexes: '^__[a-z]+__$'
+            1 file(s) validated (0 successfully)
+        </code>
+    </pre>
+    <span data-markdown>
+        <script type="text/template">
+            - See the [validate](https://mappyfile.readthedocs.io/en/latest/client.html#validate) documentation
+        </script>
+    </span>
+</section>
+
+<section>
+    <span data-markdown>
+        <script type="text/template">
+            ### Add Validation to Continuous Integration
+        </script>
+    </span>
+    <pre>
+<code class="language-yaml" data-trim data-line-numbers="2-4">
+      - name: Validate Mapfiles
+        run: |
+          mappyfile validate tests/**/*.map
+</code>
+</pre>
+    <span data-markdown>
+        <script type="text/template">
+            - See the [mappyfile worklow](https://github.com/geographika/mappyfile/blob/master/.github/workflows/main.yml)
+        </script>
+    </span>
+</section>
+
+<section>
+    <span data-markdown>
+        <script type="text/template">
+            ### Generate Dynamic Maps
+        </script>
+    </span>
+    <pre>
+    <code class="language-python" data-trim>
+import mapscript
+from PIL import Image
+import io
+
+# load a modified Map into a MapScript Map object
+mapObj = mapscript.fromstring(mappyfile.dumps(m))
+# draw the Map,  get the image as bytes - then load into a PIL image
+image = Image.open(io.BytesIO(mapObj.draw().getBytes()))
+        </code>
+</pre>
+    <span data-markdown>
+        <script type="text/template">
+            - Load a Mapfile, modify it, and create output images without writing to disk
+            - Can be wrapped in a web service
+        </script>
+    </span>
+</section>
+
+<section>
+    <span data-markdown>
+        <script type="text/template">
+            ### How do I get mappyfile?
+        </script>
+    </span>
+    <pre>
+    <code class="language-bash">
+        # pip
+        pip install mappyfile
+        # conda
+        conda install -c conda-forge mappyfile
+        # Linux
+        apt-get install --yes python3-mappyfile
+    </code>
+    </pre>
+</section>
+
+<section data-background-image="images/plugin.svg"  data-background-size="20%" data-background-opacity="10%">
+    <span data-markdown>
+        <script type="text/template">
+            ### Future Development - Plugins!
+
+            - Existing plugins:
+                + [mappyfile-colors](https://github.com/geographika/mappyfile-colors)
+                + [mappyfile-geojson](https://github.com/geographika/mappyfile-geojson)
+
+            - Future Plugins
+                + [mappyfile-templates](https://github.com/geographika/mappyfile-templates/) - apply templates to Mapfiles
+                + QGIS to Mapfile Exporter
+        </script>
+    </span>
+</section>
+
+<section data-background-image="images/link-45deg.svg" data-background-size="20%" data-background-opacity="10%">
+    <span data-markdown>
+        <script type="text/template">
+            ### Links
+
+            <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                <img src="images/github-mark.png" alt="GitHub" style="width: 24px; height: 24px; margin-right: 10px;">
+                <a href="https://github.com/geographika/mappyfile/">https://github.com/geographika/mappyfile/</a>
+            </div>
+            <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                <img src="images/rtd-logo-dark.png" alt="Docs" style="width: 24px; height: 24px; margin-right: 10px;">
+                <a href="https://mappyfile.readthedocs.io/">https://mappyfile.readthedocs.io/</a>
+            </div>
+            <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                <img src="images/mastodon.png" alt="Docs" style="width: 24px; height: 24px; margin-right: 10px;">
+                <a href="https://mastodon.social/@geographika">@geographika</a>
+            </div>
+
+            ### Thanks for Listening!
+        </script>
+    </span>
+</section>
