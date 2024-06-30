@@ -26,8 +26,104 @@
     </script>
 </section>
 
-<section data-background-image="images/mapserver-studio.png">
-    <h2><a href="https://app.mapserverstudio.net/" target="_blank">MapServer Studio</a></h2>
+<section>
+    <span data-markdown>
+        <script type="text/template">
+            ### Format Mapfiles
+        </script>
+    </span>
+<pre>
+<code class="language-bash" data-trim>
+        mappyfile format before.map after.map --indent=1
+    </code>
+</pre>
+<pre>
+    <code class="language-python" data-trim>
+        import mappyfile
+
+        mf = mappyfile.open("before.map")
+        mappyfile.save(mf, "after.map")
+    </code>
+</pre>
+</section>
+
+<section>
+    <span data-markdown>
+        <script type="text/template">
+            ### Format Mapfiles - Before
+        </script>
+    </span>
+    <pre>
+    <code class="language-python" data-trim>
+map
+/**
+Some comments
+*/
+            EXTENT -180 -90 180 90    
+    NAME "MyMap"
+    WEB
+metadata
+'wms_enable_request'  '*'
+'wms_feature_info_mime_type' 'text/html' # this is required to return the content-type for GetFeatureInfo requests       
+END
+    END
+
+PROJECTION
+"init=epsg:4326"
+END
+ # START OF THE LAYER DEFINITION
+    LAYER
+    PROCESSING 'BANDS=1'
+        PROCESSING 'CONTOUR_ITEM=elevation'
+    PROCESSING 'CONTOUR_INTERVAL=20'
+     EXTENT -180 -90 180 90 # set this here as it is not stored in the image
+     NAME "rgb"
+        TYPE RASTER
+     DATA '../data/raster/bluemarble.tif' 
+     TEMPLATE 'raster.template.html'    
+    END    
+END
+        </code>
+    </pre>
+</section>
+
+<section>
+    <span data-markdown>
+        <script type="text/template">
+            ### Format Mapfiles - After
+        </script>
+    </span>
+    <pre>
+    <code class="language-python" data-trim>
+MAP
+    EXTENT -180 -90 180 90
+    NAME "MyMap"
+    WEB
+        METADATA
+            "wms_enable_request" "*"
+            "wms_feature_info_mime_type" "text/html"
+        END
+    END
+    PROJECTION
+        "init=epsg:4326"
+    END
+    LAYER
+        PROCESSING "BANDS=1"
+        PROCESSING "CONTOUR_ITEM=elevation"
+        PROCESSING "CONTOUR_INTERVAL=20"
+        EXTENT -180 -90 180 90
+        NAME "rgb"
+        TYPE RASTER
+        DATA "../data/raster/bluemarble.tif"
+        TEMPLATE "raster.template.html"
+    END
+END
+        </code>
+    </pre>
+</section>
+
+<section data-background-image="images/mapserver-studio.png" data-background-opacity="70%">
+    <h2> <a href="https://app.mapserverstudio.net/" target="_blank">Try formatting options in MapServer Studio</a></h2>
 </section>
 
 
@@ -138,18 +234,18 @@ image = Image.open(io.BytesIO(mapObj.draw().getBytes()))
     </pre>
 </section>
 
-<section data-background-image="images/plugin.svg"  data-background-size="20%" data-background-opacity="10%">
+<section data-background-image="images/plugin.svg" data-background-size="20%" data-background-opacity="10%">
     <span data-markdown>
         <script type="text/template">
             ### Future Development - Plugins!
 
             - Existing plugins:
-                + [mappyfile-colors](https://github.com/geographika/mappyfile-colors)
-                + [mappyfile-geojson](https://github.com/geographika/mappyfile-geojson)
+            + [mappyfile-colors](https://github.com/geographika/mappyfile-colors)
+            + [mappyfile-geojson](https://github.com/geographika/mappyfile-geojson)
 
             - Future Plugins
-                + [mappyfile-templates](https://github.com/geographika/mappyfile-templates/) - apply templates to Mapfiles
-                + QGIS to Mapfile Exporter
+            + [mappyfile-templates](https://github.com/geographika/mappyfile-templates/) - apply templates to Mapfiles
+            + QGIS to Mapfile Exporter
         </script>
     </span>
 </section>
