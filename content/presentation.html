@@ -32,13 +32,15 @@
             ### Format Mapfiles
         </script>
     </span>
-<pre>
-<code class="language-bash" data-trim>
+    <pre>
+    <code class="language-bash" data-trim>
+        # using the command line
         mappyfile format before.map after.map --indent=1
     </code>
 </pre>
-<pre>
+    <pre>
     <code class="language-python" data-trim>
+        # in a Python script
         import mappyfile
 
         mf = mappyfile.open("before.map")
@@ -130,19 +132,93 @@ END
 <section>
     <span data-markdown>
         <script type="text/template">
-            ### Manipulate Mapfiles in Python
+            ### Work with Mapfiles as Python dictionaries
         </script>
     </span>
     <pre>
 <code class="language-python" data-trim>
 
+    > mappyfile.open(r"C:\Mapfile\mymap.map")
+    > print(m["layers"][0]["classes"][0])
+
+    {
+        "__type__": "class",
+        "styles": [
+            {
+                "__type__": "style",
+                "color": [
+                    151,
+                    151,
+                    151
+                ],
+                "symbol": "[symbol]",
+                "offset": [
+                    2,
+                    2
+                ],
+                "size": "[size]"
+            },
 </code>
 </pre>
+</section>
+
+<section>
     <span data-markdown>
         <script type="text/template">
-            - Access Mapfile elements through Python dictionaries
+            ### Edit Mapfiles
         </script>
     </span>
+    <pre>
+        <code class="language-python" data-trim>
+        # mapscript
+        # the next line throws an error 
+        # unless it is set to a file/location that exists
+        mymap.setConfigOption("MS_ERRORFILE", error_log)
+        mymap.debug = debug_level # set debug level 
+    
+        # mappyfile
+        mymap["config"]["ms_errorfile"] = error_log
+        mymap["debug"] = debug_level
+        </code>
+        </pre>
+</section>
+
+<section>
+    <span data-markdown>
+        <script type="text/template">
+            ### Validate Mapfiles
+
+            JSON Schemas for all Mapfile Elements
+        </script>
+        </span>
+        <pre>
+            <code class="language-json" data-trim>
+            {
+                "type": "object",
+                "additionalProperties": false,
+                "patternProperties": {
+                    "^__[a-z]+__$": {}
+                },
+                "properties": {
+                    "__type__": {
+                    "enum": [ "scalebar" ]
+                    },
+                    "include": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                    },
+                    "align": {
+                    "type": "string",
+                    "enum": [ "left", "center", "right" ],
+                    "additionalProperties": false,
+                    "metadata": {
+                        "minVersion": 5.2
+                    }
+                    },
+            </code>
+            </pre>
 </section>
 
 <section>
@@ -239,13 +315,15 @@ image = Image.open(io.BytesIO(mapObj.draw().getBytes()))
         <script type="text/template">
             ### Future Development - Plugins!
 
-            - Existing plugins:
-            + [mappyfile-colors](https://github.com/geographika/mappyfile-colors)
-            + [mappyfile-geojson](https://github.com/geographika/mappyfile-geojson)
+            ##### Existing Plugins
 
-            - Future Plugins
+            + [mappyfile-colors](https://github.com/geographika/mappyfile-colors) - standardise and convert colours in a Mapfile
+            + [mappyfile-geojson](https://github.com/geographika/mappyfile-geojson) - convert GeoJSON to inline Mapfile features
+
+            ##### Future Plugins
+
             + [mappyfile-templates](https://github.com/geographika/mappyfile-templates/) - apply templates to Mapfiles
-            + QGIS to Mapfile Exporter
+            + QGIS to Mapfile Exporter - export QGIS projects to MapServer
         </script>
     </span>
 </section>
